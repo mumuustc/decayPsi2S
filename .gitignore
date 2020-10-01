@@ -1,14 +1,17 @@
 testFiles
 
+build/CMakeFiles
+build/log
+build/output
+build/lheFiles
 build/CMakeCache.txt
 build/Makefile
 build/cmake_install.cmake
 build/liblibgen.so
 build/fdgen
 build/boxgen
-build/CMakeFiles
 build/*.root
 build/*.tx
-build/log
-build/output
+build/*.lhe
+build/*_C*
 build/submitJob.con

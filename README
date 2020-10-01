@@ -10,6 +10,9 @@ source sourceCode.sh  # setup environment and compile code
 
 ./submitJob.sh  # submit job to CERN batch farm using condor  
 
+root -l -b -q convert_SL2LHE.C+  # convert generated STARlight-style test.tx to LHE file
+
+./convertLHE.sh  # batch conversion of generated STARlight-style output (.tx) to LHE files
 
 
 # ****** instructions below are used to setup your own environment ******
