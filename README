@@ -1,0 +1,44 @@
+# *** to run the package using the environment setup in shuaiy's account ***
+
+cd build
+
+source sourceCode.sh  # setup environment and compile code
+
+./fdgen  # test run for an embedded file
+
+./submitJob.sh  # submit job to CERN batch farm using condor  
+
+
+
+# ****** instructions below are used to setup your own environment ******
+
+# To enable support for Pythia8, one needs to install Pythia8 following the instruction in http://home.thep.lu.se/Pythia/
+# Put Pythia package in, e.g., $HOME/Tools ($HOME=/afs/cern.ch/user/s/shuaiy)
+cd $HOME/Tools/pythia8303
+./configure
+make
+
+# To correctly compiling run the pythia8.C in $ROOTSYS/tutorials/pythia,
+# one needs to add the following line in your own rootlogon.C
+gSystem->AddIncludePath("-I$HOME/Tools/pythia8303/include");
+
+# Build root in LXPLUS using compilation
+cd $HOME/Tools
+git clone --branch v6-22-00-patches https://github.com/root-project/root.git root_source
+
+mkdir root_build   # temporarily store build files
+mkdir $HOME/Tools/root_6.22 # install directory
+
+# Now build ROOT (ref. https://root.cern.ch/building-root)
+cd root_build
+
+# Define the variable PYTHIA8_DIR for cmake of root to find pythia8
+export PYTHIA8_DIR="$HOME/Tools/pythia8303"
+cmake3 -DCMAKE_INSTALL_PREFIX=$HOME/Tools/root_6.22 ../root_source
+
+# Build root
+cmake3 --build . --target install -- -j8 >& buildLog& # here, 8 is the number of available cores.
+
+# To use the compiled root in LXPLUS
+source $HOME/Tools/root_6.22/bin/thisroot.sh
+export LD_LIBRARY_PATH="$HOME/Tools/pythia8303/lib:$LD_LIBRARY_PATH"
